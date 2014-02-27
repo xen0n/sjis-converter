@@ -13,9 +13,10 @@ import unidecode
 def detect_chars(s):
     '''检测需要转换的字符位置.
 
-        >>> detect_chars(u'AKB0048 ED \u5922\u306f\u4f55\u5ea6\u3082\u751f\u307e\u308c\u5909\u308f\u308b.mp3')
+        >>> from __future__ import unicode_literals
+        >>> detect_chars('AKB0048 ED 夢は何度も生まれ変わる.mp3')
         []
-        >>> detect_chars(u'\u5411\u94f6\u6cb3\u5f00\u7403\uff01\uff01 IN \u5730\u7403\u5100\u30ea\u30d5\u30c6\u30a3\u30f3\u30b0.mp3')
+        >>> detect_chars('向银河开球！！ IN 地球儀リフティング.mp3')
         [1, 3]
 
     '''
@@ -38,8 +39,13 @@ def detect_chars(s):
 def convert_char(s):
     '''转换单个字为小写拼音.
 
-    >>> convert_char(u'向')
-    u'xiang'
+        >>> from __future__ import unicode_literals
+        >>> import six
+        >>> result = convert_char('向')
+        >>> result == 'xiang'
+        True
+        >>> isinstance(result, six.text_type)
+        True
 
     '''
 
@@ -49,10 +55,11 @@ def convert_char(s):
 def convert_str(s):
     '''转换完整的文件名.
 
-    >>> print(convert_str(u'AKB0048 ED \u5922\u306f\u4f55\u5ea6\u3082\u751f\u307e\u308c\u5909\u308f\u308b.mp3'))
-    AKB0048 ED 夢は何度も生まれ変わる.mp3
-    >>> print(convert_str(u'向银河开球！！ IN 地球儀リフティング.mp3'))
-    向yin河kai球！！ IN 地球儀リフティング.mp3
+        >>> from __future__ import unicode_literals, print_function
+        >>> print(convert_str('AKB0048 ED 夢は何度も生まれ変わる.mp3'))
+        AKB0048 ED 夢は何度も生まれ変わる.mp3
+        >>> print(convert_str('向银河开球！！ IN 地球儀リフティング.mp3'))
+        向yin河kai球！！ IN 地球儀リフティング.mp3
 
     '''
 
@@ -97,7 +104,6 @@ def main(argv):
                 print('%s -> %s' % (filename, new_name, ))
 
     return 0
-
 
 
 if __name__ == '__main__':
